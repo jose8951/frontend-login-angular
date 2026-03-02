@@ -1,0 +1,130 @@
+<div class="min-vh-100" style="background: #e1e3f0;">
+
+  <!-- Navbar -->
+<app-navbar></app-navbar>
+
+
+  <!-- Toast -->
+  <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+    @if (mensajeForm()) {
+      <div class="toast show align-items-center border-0 text-white"
+        [class.bg-success]="mensajeForm().includes('✅')"
+        [class.bg-danger]="mensajeForm().includes('❌')"
+        style="border-radius: 12px; min-width: 250px;">
+        <div class="toast-body fw-bold">
+          {{ mensajeForm() }}
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="container-fluid container-md py-4 px-3">
+
+    <!-- Formulario -->
+    <div class="card border-0 shadow-lg mb-4" style="background: #515358; border-radius: 16px;">
+      <div class="card-body p-4">
+        <h5 class="fw-bold mb-4" style="color: #7c83ff;">
+          {{ modoEdicion() ? '✏️ Editar usuario' : '➕ Registrar nuevo usuario' }}
+        </h5>
+        <div class="row g-2">
+          <div class="col-12 col-sm-5">
+            <input 
+              type="email" 
+              class="form-control" 
+              [(ngModel)]="nuevoUsuario.email" 
+              placeholder="Email"
+              style="background: #0f1117; border: 1px solid #2d3148; color: white;">
+          </div>
+          <div class="col-12 col-sm-4">
+            <input 
+              type="password" 
+              class="form-control" 
+              [(ngModel)]="nuevoUsuario.password" 
+              [placeholder]="modoEdicion() ? 'Nueva contraseña (opcional)' : 'Contraseña'"
+              style="background: #0f1117; border: 1px solid #2d3148; color: white;">
+          </div>
+          <div class="col-12 col-sm-3 d-flex gap-2">
+            @if (modoEdicion()) {
+              <button (click)="actualizarUsuario()" class="btn w-100 fw-bold" style="background: #7c83ff; color: white; border-radius: 8px;">
+                Actualizar
+              </button>
+              <button (click)="cancelarModoEdicion()" class="btn btn-outline-secondary fw-bold">
+                ✕
+              </button>
+            } @else {
+              <button (click)="crearUsuario()" class="btn w-100 fw-bold" style="background: #7c83ff; color: white; border-radius: 8px;">
+                Guardar
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla -->
+    <div class="card border-0 shadow-lg" style="background: #515358; border-radius: 16px;">
+      <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h5 class="fw-bold mb-0" style="color: #7c83ff;">👥 Usuarios en la Base de Datos</h5>
+          <span class="badge rounded-pill px-3 py-2" style="background: #2d3148; color: #7c83ff;">
+            {{ usuarios().length }} usuarios
+          </span>
+        </div>
+
+        @if (cargando()) {
+          <div class="text-center py-5">
+            <div class="spinner-border" style="color: #7c83ff;" role="status"></div>
+            <p class="mt-3" style="color: #4a5080;">Cargando usuarios...</p>
+          </div>
+        } @else if (usuarios().length > 0) {
+          <div class="table-responsive">
+            <table class="table table-hover mb-0" style="color: #cdd3f0;">
+              <thead>
+                <tr style="border-color: #2d3148;">
+                  <th style="color: #7c83ff; border-color: #2d3148;">ID</th>
+                  <th style="color: #7c83ff; border-color: #2d3148;">Email</th>
+                  <th style="color: #7c83ff; border-color: #2d3148;">Estado</th>
+                  <th style="color: #7c83ff; border-color: #2d3148;">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (user of usuarios(); track user.id) {
+                  <tr 
+                    style="border-color: #2d3148; cursor: pointer;"
+                    [style.background]="usuarioSeleccionado()?.id === user.id ? '#232640' : ''"
+                    (click)="seleccionarUsuario(user)">
+                    <td style="border-color: #2d3148;">
+                      <span class="badge" style="background: #2d3148; color: #7c83ff;">#{{ user.id }}</span>
+                    </td>
+                    <td style="border-color: #2d3148;">{{ user.email }}</td>
+                    <td style="border-color: #2d3148;">
+                      <span 
+                        (click)="$event.stopPropagation(); toggleActivo(user)"
+                        class="badge" 
+                        style="cursor: pointer;"
+                        [style.background]="user.active ? '#1a3a2a' : '#3a1a1a'"
+                        [style.color]="user.active ? '#4ade80' : '#f87171'">
+                        {{ user.active ? '● Activo' : '● Inactivo' }}
+                      </span>
+                    </td>
+                    <td style="border-color: #2d3148;">
+                      <button 
+                        (click)="$event.stopPropagation(); eliminarUsuario(user)" 
+                        class="btn btn-sm btn-outline-danger">🗑️</button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <div class="text-center py-5" style="color: #4a5080;">
+            <div style="font-size: 3rem;">📭</div>
+            <p class="mt-2">No hay usuarios registrados aún</p>
+          </div>
+        }
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<nav class="navbar navbar-dark navbar-expand px-3 py-3" style="background: #252838; border-bottom: 1px solid #3d4166;">
+  <span class="navbar-brand fw-bold" style="color: #7c83ff;">
+    ⚡ Panel de Control
+  </span>
+  <div class="navbar-nav me-auto d-flex flex-row gap-3">
+    <a class="nav-link" routerLink="/dashboard" routerLinkActive="active-link" style="color: #cdd3f0;">👥 Usuarios</a>
+    <a class="nav-link" routerLink="/pokemon" routerLinkActive="active-link" style="color: #cdd3f0;">🔴 Pokémon</a>
+    <a class="nav-link" routerLink="/superheroes" routerLinkActive="active-link" style="color: #cdd3f0;">🦸 Héroes</a>
+  </div>
+  <div class="d-flex align-items-center gap-3">
+    <span style="color: #cdd3f0; font-size: 0.9rem;">👤 {{ currentUser() }}</span>
+    <button (click)="logout()" class="btn btn-sm btn-outline-danger">Cerrar Sesión</button>
+  </div>
+</nav>

@@ -1,0 +1,45 @@
+<app-navbar></app-navbar>
+
+<div class="min-vh-100 py-4 px-3" style="background: #1e2130;">
+  <div class="container-fluid container-md">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4 class="fw-bold mb-0" style="color: #7c83ff;">🔴 Pokémon</h4>
+      <span class="badge rounded-pill px-3 py-2" style="background: #2a2d3e; color: #7c83ff;">
+        {{ pokemonsFiltrados().length }} pokémon
+      </span>
+    </div>
+
+    <!-- Buscador -->
+    <div class="mb-4">
+      <input 
+        type="text"
+        class="form-control"
+        placeholder="🔍 Buscar por nombre..."
+        [ngModel]="busqueda()"
+        (ngModelChange)="busqueda.set($event)"
+        style="background: #2a2d3e; border: 1px solid #3d4166; color: white; border-radius: 10px;">
+    </div>
+
+    <div class="row g-3">
+      @for (p of pokemonsFiltrados(); track p.id) {
+        <div class="col-6 col-sm-4 col-md-3 col-lg-4">
+          <div class="card border-0 text-center h-100" style="background: #2a2d3e; border-radius: 12px;">
+            <div class="card-body p-2">
+              <img [src]="p.url" [alt]="p.nombre" class="img-fluid mb-2" style="max-height: 120px;">
+              <p class="mb-0 fw-bold" style="color: white; font-size: 0.85rem;">{{ p.nombre }}</p>
+              <p class="mb-0" style="color: #7c83ff; font-size: 0.75rem;">#{{ p.numero }}</p>
+              <p class="mb-0" style="color: #4a5080; font-size: 0.7rem;">{{ p.entorno }}</p>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (pokemonsFiltrados().length === 0) {
+        <div class="text-center py-5" style="color: #4a5080;">
+          <div style="font-size: 3rem;">🔍</div>
+          <p class="mt-2">No se encontró ningún Pokémon</p>
+        </div>
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+:host {
+  display: block;
+}
+
+input::placeholder {
+  color: #4a5080 !important;
+}
+
+.table-hover tbody tr:hover {
+  background: #232640 !important;
+}
